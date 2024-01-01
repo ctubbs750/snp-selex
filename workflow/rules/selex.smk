@@ -7,7 +7,7 @@ configfile: "config/config.yaml"
 # Parameters
 BATCH_1_URL = config["SNP-SELEX"]["FILE_URLS"]["BATCH_1"]
 BATCH_2_URL = config["SNP-SELEX"]["FILE_URLS"]["BATCH_2"]
-PROFILES = [i.split("|")[1] for i in config["SNP-SELEX"]["TARGETS"]]
+PROFILES = [i.split("|")[1] for i in config["TFBS-SCAN"]["TARGETS"]]
 
 # Settings
 min_version("7.32.4")

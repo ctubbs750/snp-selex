@@ -2,9 +2,12 @@ SNP-SELEX:
   FILE_URLS:
     BATCH_1: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE118nnn/GSE118725/suppl/GSE118725%5Fpbs.obs%5Fpval05.tsv.gz
     BATCH_2: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE118nnn/GSE118725/suppl/GSE118725%5Fpbs.novel%5Fbatch.tsv.gz
+
+TFBS-SCAN:
+  # Target JASPAR profiles to scan against
   TARGETS:
-    - CTCF|MA0139.1|19
-    - FOXA1|MA0007.3|17
+    - AR|MA0007.3|17
+    - ARNTL|MA0603.1|10
 
 GENOME:
   # Genome build
