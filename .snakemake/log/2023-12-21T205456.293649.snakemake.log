@@ -1,0 +1,58 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+selex_add_oligo_bounds          2
+selex_add_ref_sequence          2
+selex_filter_long_motifs        2
+total                           7
+
+Select jobs to execute...
+
+[Thu Dec 21 20:55:01 2023]
+Job 3: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_novel.tsv; Code has changed since last execution
+
+
+[Thu Dec 21 20:55:01 2023]
+Job 13: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_original.tsv; Code has changed since last execution
+
+[Thu Dec 21 20:55:01 2023]
+Error in rule selex_filter_long_motifs:
+    jobid: 3
+    input: results/snp-selex/add_profile_info_novel.tsv
+    output: results/snp-selex/filter_long_motifs_novel.tsv
+    shell:
+        
+        awk -F',' 'BEGIN {OFS = '	'} {if($9 <= 20) print $0}' results/snp-selex/add_profile_info_novel.tsv > results/snp-selex/filter_long_motifs_novel.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job selex_filter_long_motifs since they might be corrupted:
+results/snp-selex/filter_long_motifs_novel.tsv
+[Thu Dec 21 20:55:01 2023]
+Error in rule selex_filter_long_motifs:
+    jobid: 13
+    input: results/snp-selex/add_profile_info_original.tsv
+    output: results/snp-selex/filter_long_motifs_original.tsv
+    shell:
+        
+        awk -F',' 'BEGIN {OFS = '	'} {if($9 <= 20) print $0}' results/snp-selex/add_profile_info_original.tsv > results/snp-selex/filter_long_motifs_original.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job selex_filter_long_motifs since they might be corrupted:
+results/snp-selex/filter_long_motifs_original.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-21T205456.293649.snakemake.log

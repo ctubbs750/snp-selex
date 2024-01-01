@@ -1,0 +1,39 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+setup_fetch_target_names        1
+total                           2
+
+Select jobs to execute...
+
+[Fri Dec 22 10:26:09 2023]
+rule setup_fetch_target_names:
+    input: resources/data/data/snp-selex/GSE118725_pbs.obs_pval05.tsv.gz, resources/data/data/snp-selex/GSE118725_pbs.novel_batch.tsv.gz
+    output: results/snp-selex/targets.txt, results/snp-selex/target_names.txt
+    jobid: 1
+    reason: Missing output files: results/snp-selex/target_names.txt; Software environment definition has changed since last execution
+    resources: tmpdir=/tmp
+
+Activating conda environment: tfbs-activity
+[Fri Dec 22 10:26:24 2023]
+Finished job 1.
+1 of 2 steps (50%) done
+Removing temporary output results/snp-selex/targets.txt.
+Select jobs to execute...
+
+[Fri Dec 22 10:26:24 2023]
+localrule all:
+    input: results/snp-selex/target_names.txt
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/target_names.txt
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 10:26:24 2023]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2023-12-22T102605.888122.snakemake.log

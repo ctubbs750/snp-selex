@@ -1,0 +1,62 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                       count
+----------------------  -------
+all                           1
+selex_add_profile_info        2
+targets_make_targets          1
+total                         4
+
+Select jobs to execute...
+
+[Fri Dec 22 08:44:10 2023]
+rule targets_make_targets:
+    output: results/snp-selex/target_list.txt
+    jobid: 7
+    reason: Code has changed since last execution
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 08:44:12 2023]
+Finished job 7.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Fri Dec 22 08:44:12 2023]
+Job 8: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge
+        tr is to convert output to tab delim
+        
+Reason: Input files updated by another job: results/snp-selex/target_list.txt
+
+
+[Fri Dec 22 08:44:12 2023]
+Job 1: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge
+        tr is to convert output to tab delim
+        
+Reason: Input files updated by another job: results/snp-selex/target_list.txt
+
+[Fri Dec 22 08:44:15 2023]
+Finished job 1.
+2 of 4 steps (50%) done
+[Fri Dec 22 08:44:16 2023]
+Finished job 8.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Fri Dec 22 08:44:16 2023]
+localrule all:
+    input: results/snp-selex/add_profile_info_novel.tsv, results/snp-selex/add_profile_info_original.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/add_profile_info_original.tsv, results/snp-selex/add_profile_info_novel.tsv
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 08:44:16 2023]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: .snakemake/log/2023-12-22T084407.006596.snakemake.log

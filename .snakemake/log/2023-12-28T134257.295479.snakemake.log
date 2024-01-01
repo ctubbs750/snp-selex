@@ -1,0 +1,24 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+all                       1
+selex_sort_targets        1
+total                     2
+
+Select jobs to execute...
+
+[Thu Dec 28 13:43:00 2023]
+Job 1: 
+        Sorts target list under JOIN specs.
+        
+Reason: Missing output files: results/snp-selex/targets.sorted.txt
+
+RuleException in rule selex_sort_targets in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 57:
+AttributeError: 'Params' object has no attribute 'targets', when formatting the following:
+
+        sort -t $'	' -k 1b,1 {params.targets} > {output}
+        

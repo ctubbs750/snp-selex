@@ -1,0 +1,81 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                       count
+----------------------  -------
+all                           1
+setup_calculate_pwm           2
+setup_install_datasets        1
+setup_setup_targets           1
+total                         5
+
+Select jobs to execute...
+
+[Fri Dec 22 11:58:08 2023]
+rule setup_calculate_pwm:
+    input: resources/data/jaspar/MA0007.3/MA0007.3.jaspar
+    output: results/snp-selex/pwms/MA0007.3/MA0007.3-pwm.txt
+    jobid: 6
+    reason: Missing output files: results/snp-selex/pwms/MA0007.3/MA0007.3-pwm.txt
+    wildcards: PROFILE=MA0007.3/MA0007.3
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 11:58:10 2023]
+rule setup_calculate_pwm:
+    input: resources/data/jaspar/MA0139.1/MA0139.1.jaspar
+    output: results/snp-selex/pwms/MA0139.1/MA0139.1-pwm.txt
+    jobid: 4
+    reason: Missing output files: results/snp-selex/pwms/MA0139.1/MA0139.1-pwm.txt; Set of input files has changed since last execution
+    wildcards: PROFILE=MA0139.1/MA0139.1
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 11:58:10 2023]
+rule setup_setup_targets:
+    output: results/snp-selex/targets.txt
+    jobid: 1
+    reason: Missing output files: results/snp-selex/targets.txt; Set of input files has changed since last execution; Code has changed since last execution; Params have changed since last execution; Software environment definition has changed since last execution
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 11:58:10 2023]
+Job 2: 
+        Download and upack selex data across both batches. 
+        Batch_1 is original and batch_2 is novel.
+        
+Reason: Missing output files: resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv, resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv; Set of input files has changed since last execution; Code has changed since last execution; Params have changed since last execution
+
+Activating conda environment: tfbs-activity
+Activating conda environment: tfbs-activity
+Activating conda environment: tfbs-activity
+Activating conda environment: tfbs-activity
+[Fri Dec 22 11:58:11 2023]
+Error in rule setup_calculate_pwm:
+    jobid: 6
+    input: resources/data/jaspar/MA0007.3/MA0007.3.jaspar
+    output: results/snp-selex/pwms/MA0007.3/MA0007.3-pwm.txt
+    conda-env: tfbs-activity
+
+[Fri Dec 22 11:58:11 2023]
+Error in rule setup_calculate_pwm:
+    jobid: 4
+    input: resources/data/jaspar/MA0139.1/MA0139.1.jaspar
+    output: results/snp-selex/pwms/MA0139.1/MA0139.1-pwm.txt
+    conda-env: tfbs-activity
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk, line 92:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate 'tfbs-activity'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/.snakemake/scripts/tmpcn3ejmui.pwm.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk", line 92, in __rule_calculate_pwm
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk, line 92:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate 'tfbs-activity'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/.snakemake/scripts/tmp3iwxhygl.pwm.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk", line 92, in __rule_calculate_pwm
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+[Fri Dec 22 11:58:15 2023]
+Finished job 2.
+1 of 5 steps (20%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-22T115804.781248.snakemake.log

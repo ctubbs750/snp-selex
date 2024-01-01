@@ -1,0 +1,42 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                            count
+---------------------------  -------
+all                                1
+selex_format_original_batch        1
+total                              2
+
+Select jobs to execute...
+
+[Fri Dec 22 08:15:34 2023]
+Job 1: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch
+        Notes:
+        - tail removes header
+        - tr replaces :
+        - vawk first split grabs TF from oligo ID
+        - vawk gsub replace - in column 2
+        - last vawk split gets 
+        
+Reason: Code has changed since last execution
+
+Activating conda environment: tfbs-activity
+[Fri Dec 22 08:15:46 2023]
+Finished job 1.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Fri Dec 22 08:15:46 2023]
+localrule all:
+    input: results/snp-selex/format_original_batch.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/format_original_batch.tsv
+    resources: tmpdir=/tmp
+
+[Fri Dec 22 08:15:46 2023]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2023-12-22T081530.464451.snakemake.log

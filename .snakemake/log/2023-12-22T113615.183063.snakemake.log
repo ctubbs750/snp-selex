@@ -1,0 +1,13 @@
+Building DAG of jobs...
+AmbiguousRuleException:
+Rules setup_download_jaspar and setup_download_profiles are ambiguous for the file resources/data/data/jaspar/MA0139.1.jaspar.
+Consider starting rule output with a unique prefix, constrain your wildcards, or use the ruleorder directive.
+Wildcards:
+	setup_download_jaspar: PROFILE=MA0139.1
+	setup_download_profiles: PROFILE=MA0139.1
+Expected input files:
+	setup_download_jaspar: 
+	setup_download_profiles: 
+Expected output files:
+	setup_download_jaspar: resources/data/data/jaspar/MA0139.1.jaspar
+	setup_download_profiles: resources/data/data/jaspar/MA0139.1.jaspar

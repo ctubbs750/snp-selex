@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                   count
+----------------------------------  -------
+all                                       1
+setup_filter_names_to_human_jaspar        1
+total                                     2
+
+Select jobs to execute...
+
+[Fri Dec 22 10:38:14 2023]
+rule setup_filter_names_to_human_jaspar:
+    input: results/snp-selex/target_names.txt
+    output: results/snp-selex/names_in_jaspar.txt, results/snp-selex/filtered_names.txt
+    jobid: 1
+    reason: Missing output files: results/snp-selex/filtered_names.txt
+    resources: tmpdir=/tmp
+
+Activating conda environment: tfbs-activity
+Waiting at most 5 seconds for missing files.
+MissingOutputException in rule setup_filter_names_to_human_jaspar in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk, line 65:
+Job 1  completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+results/snp-selex/filtered_names.txt
+Removing output files of failed job setup_filter_names_to_human_jaspar since they might be corrupted:
+results/snp-selex/names_in_jaspar.txt
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-22T103810.069738.snakemake.log

@@ -1,0 +1,51 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 16
+Rules claiming more threads will be scaled down.
+Job stats:
+job                 count
+----------------  -------
+all                     1
+selex_scan_oligo        2
+total                   3
+
+Select jobs to execute...
+
+[Fri Dec 22 12:39:03 2023]
+Job 9: 
+        python test
+        
+Reason: Missing output files: results/snp-selex/scan_oligo_1.tsv
+
+[Fri Dec 22 12:39:03 2023]
+Job 17: 
+        python test
+        
+Reason: Missing output files: results/snp-selex/scan_oligo_2.tsv
+
+[Fri Dec 22 12:39:04 2023]
+Error in rule selex_scan_oligo:
+    jobid: 9
+    input: results/snp-selex/make_oligo_fasta_1.fa
+    output: results/snp-selex/scan_oligo_1.tsv
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 174:
+Command 'set -euo pipefail;  /accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/bin/python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/.snakemake/scripts/tmp90qqqkoz.score.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk", line 174, in __rule_scan_oligo
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+[Fri Dec 22 12:39:04 2023]
+Error in rule selex_scan_oligo:
+    jobid: 17
+    input: results/snp-selex/make_oligo_fasta_2.fa
+    output: results/snp-selex/scan_oligo_2.tsv
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 174:
+Command 'set -euo pipefail;  /accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/bin/python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/.snakemake/scripts/tmpn3pais1i.score.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk", line 174, in __rule_scan_oligo
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-22T123855.315696.snakemake.log

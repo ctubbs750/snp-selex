@@ -1,0 +1,4 @@
+NameError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 168:
+name 'rule' is not defined
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/Snakefile", line 29, in <module>
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk", line 168, in <module>

@@ -52,7 +52,7 @@ rule echo_targets:
     output:
         temp("results/snp-selex/targets.txt"),
     params:
-        targets=config["SNP-SELEX"]["TARGETS"],
+        targets=config["TFBS-SCAN"]["TARGETS"],
     log:
         stdout="workflow/logs/echo_targets.stdout",
         stderr="workflow/logs/echo_targets.stderr",

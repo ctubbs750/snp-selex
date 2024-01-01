@@ -1,0 +1,4 @@
+WorkflowError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk, line 82:
+Rule download_jaspar is not defined in this workflow. Available rules: all, install_datasets, compile_pwmscan, download_profiles
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/Snakefile", line 28, in <module>
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/setup.smk", line 82, in <module>

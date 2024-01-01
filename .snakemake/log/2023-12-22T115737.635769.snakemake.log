@@ -1,0 +1,6 @@
+Building DAG of jobs...
+MissingInputException in rule all in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/Snakefile, line 36:
+Missing input files for rule all:
+    affected files:
+        resources/data/snp-selex/batch_1.tsv
+        resources/data/snp-selex/batch_2.tsv

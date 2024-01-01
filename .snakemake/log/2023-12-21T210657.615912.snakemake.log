@@ -1,0 +1,123 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+selex_add_oligo_bounds          2
+selex_add_profile_info          2
+selex_add_ref_sequence          2
+selex_filter_long_motifs        2
+total                           9
+
+Select jobs to execute...
+
+[Thu Dec 21 21:07:04 2023]
+Job 4: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge
+        
+Reason: Updated input files: results/snp-selex/target_list.txt
+
+
+[Thu Dec 21 21:07:04 2023]
+Job 14: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge
+        
+Reason: Updated input files: results/snp-selex/target_list.txt
+
+[Thu Dec 21 21:07:04 2023]
+Finished job 4.
+1 of 9 steps (11%) done
+Select jobs to execute...
+
+[Thu Dec 21 21:07:04 2023]
+Job 3: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_novel.tsv; Input files updated by another job: results/snp-selex/add_profile_info_novel.tsv
+
+Activating conda environment: tfbs-activity
+[Thu Dec 21 21:07:04 2023]
+Finished job 14.
+2 of 9 steps (22%) done
+Select jobs to execute...
+
+[Thu Dec 21 21:07:04 2023]
+Job 13: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_original.tsv; Input files updated by another job: results/snp-selex/add_profile_info_original.tsv
+
+Activating conda environment: tfbs-activity
+[Thu Dec 21 21:07:05 2023]
+Finished job 3.
+3 of 9 steps (33%) done
+Select jobs to execute...
+
+[Thu Dec 21 21:07:05 2023]
+Job 2: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
+        
+Reason: Input files updated by another job: results/snp-selex/filter_long_motifs_novel.tsv
+
+Activating conda environment: tfbs-activity
+[Thu Dec 21 21:07:05 2023]
+Finished job 13.
+4 of 9 steps (44%) done
+Select jobs to execute...
+
+[Thu Dec 21 21:07:05 2023]
+Job 12: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
+        
+Reason: Input files updated by another job: results/snp-selex/filter_long_motifs_original.tsv
+
+Activating conda environment: tfbs-activity
+[Thu Dec 21 21:07:05 2023]
+Finished job 2.
+5 of 9 steps (56%) done
+Removing temporary output results/snp-selex/filter_long_motifs_novel.tsv.
+Select jobs to execute...
+
+[Thu Dec 21 21:07:05 2023]
+Job 1: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm,oligo_lbound, oligo_rbound, refseq
+        
+Reason: Input files updated by another job: results/snp-selex/add_oligo_bounds_novel.tsv
+
+[Thu Dec 21 21:07:05 2023]
+Finished job 12.
+6 of 9 steps (67%) done
+Removing temporary output results/snp-selex/filter_long_motifs_original.tsv.
+Select jobs to execute...
+
+[Thu Dec 21 21:07:05 2023]
+Job 11: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm,oligo_lbound, oligo_rbound, refseq
+        
+Reason: Input files updated by another job: results/snp-selex/add_oligo_bounds_original.tsv
+
+[Thu Dec 21 21:07:05 2023]
+Finished job 1.
+7 of 9 steps (78%) done
+[Thu Dec 21 21:07:05 2023]
+Finished job 11.
+8 of 9 steps (89%) done
+Select jobs to execute...
+
+[Thu Dec 21 21:07:05 2023]
+localrule all:
+    input: results/snp-selex/add_ref_sequence_novel.tsv, results/snp-selex/add_ref_sequence_original.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/add_ref_sequence_novel.tsv, results/snp-selex/add_ref_sequence_original.tsv
+    resources: tmpdir=/tmp
+
+[Thu Dec 21 21:07:05 2023]
+Finished job 0.
+9 of 9 steps (100%) done
+Complete log: .snakemake/log/2023-12-21T210657.615912.snakemake.log

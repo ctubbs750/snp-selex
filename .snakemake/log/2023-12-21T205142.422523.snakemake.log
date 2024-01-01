@@ -1,0 +1,39 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+selex_add_oligo_bounds          1
+selex_add_profile_info          1
+selex_add_ref_sequence          1
+selex_filter_long_motifs        1
+selex_format_novel_batch        1
+total                           6
+
+Select jobs to execute...
+
+[Thu Dec 21 20:51:46 2023]
+Job 5: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch
+        
+Reason: Code has changed since last execution
+
+[Thu Dec 21 20:51:46 2023]
+Error in rule selex_format_novel_batch:
+    jobid: 5
+    input: resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv
+    output: results/snp-selex/format_novel_batch.tsv
+    shell:
+        
+        tail -n +2 resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv |
+        awk -F","" 'BEGIN {OFS = ","} {print $0, "novel"}' > results/snp-selex/format_novel_batch.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2023-12-21T205142.422523.snakemake.log
