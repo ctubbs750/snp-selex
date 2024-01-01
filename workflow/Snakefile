@@ -1,0 +1,41 @@
+from snakemake.utils import min_version
+
+
+# Configuration
+configfile: "config/config.yaml"
+
+
+# Settings
+min_version("7.32.4")
+
+
+module genome:
+    snakefile:
+        "https://raw.githubusercontent.com/ctubbs750/genome/main/workflow/Snakefile"
+    config:
+        config
+
+
+module selex:
+    snakefile:
+        "rules/selex.smk"
+    config:
+        config
+
+
+# Import modules
+use rule * from genome as genome_*
+
+
+use rule * from selex as selex_*
+
+
+###
+# Main
+###
+
+
+rule all:
+    input:
+        rules.selex_all.input,
+    default_target: True

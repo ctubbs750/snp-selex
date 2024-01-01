@@ -1,0 +1,1 @@
+snakemake -s workflow/Snakefile --use-conda --conda-prefix ~/snakemake_condas/ -c4 --notemp --cache ~/snakemake_caches/
