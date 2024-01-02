@@ -16,7 +16,7 @@ min_version("7.32.4")
 rule all:
     input:
         "results/snp-selex/targets.sorted.txt",
-        expand("results/snp-selex/add_oligo_bounds_{batch}.tsv", batch=["1", "2"]),
+        "results/snp-selex/snp-selex.combined.tsv",
     default_target: True
 
 
@@ -85,7 +85,7 @@ rule sort_targets:
 rule format_batch_1:
     message:
         """
-        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
         Notes:
         - tail removes header
         - tr replaces :
@@ -115,7 +115,7 @@ rule format_batch_1:
 rule format_batch_2:
     message:
         """
-        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
         Notes:
         - tail removes header
         - vawk prints entire line, adds "novel" batch flag
@@ -221,54 +221,43 @@ rule add_oligo_bounds:
         """
 
 
-# rule make_oligo_fasta:
-#     message:
-#         """
-#         Note ID formatting for 4th column in BED
-#         """
-#     input:
-#         batch=rules.add_oligo_bounds.output,
-#         genome="resources/data/genome/hg19/hg19.fa.gz",
-#     output:
-#         "results/snp-selex/make_oligo_fasta_{batch}.fa",
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     log:
-#         stdout="workflow/logs/make_oligo_fasta_{batch}.stdout",
-#         stderr="workflow/logs/make_oligo_fasta_{batch}.stderr",
-#     threads: 1
-#     shell:
-#         """
-#         vawk '{{print $10, $11, $12, $2"-"$8"-"$9}}' {input.batch} |
-#         bedtools getfasta -fi {input.genome} -bed stdin -nameOnly > {output}
-#         """ 
+rule combine_batches:
+    message:
+        """
+        Combines data from both batches into single file.
+        """
+    input:
+        batch_1="results/snp-selex/add_oligo_bounds_1.tsv",
+        batch_2="results/snp-selex/add_oligo_bounds_2.tsv",
+    output:
+        temp("results/snp-selex/combine_batches.tsv"),
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/combine_batches.stdout",
+        stderr="workflow/logs/combine_batches.stderr",
+    threads: 1
+    shell:
+        """
+        cat {input.batch_1} {input.batch_2} > {output}
+        """ 
 
-# rule add_oligo_sequence:
-#     message:
-#         """
-#         Adds oligo sequence from FASTA to matrix
-#         """
-#     input:
-#         batch=rules.add_oligo_bounds.output,
-#         fasta=rules.make_oligo_fasta.output,
-#     output:
-#        main="results/snp-selex/combine_scan_info_{batch}.tsv",
-#        seqs=temp("results/snp-selex/sequences_{batch}.tsv")
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     log:
-#         stdout="workflow/logs/add_oligo_sequence_{batch}.stdout",
-#         stderr="workflow/logs/add_oligo_sequence_{batch}.stderr",
-#     threads: 1
-#     shell:
-#         """
-#         grep -v '^#' {input.fasta} > {output.seqs} &&
-#         paste {input.batch} {output.seqs} -d $'\t' > {output.main}
-#         """
-
-###########################
-# can probably keep everything in hg19
-# activity maps aren't build specific
-# dpwm isnt' eitehr. 
-
-# TODO; will just need to add flag if PBvariant...
+rule flag_pbvar:
+    message:
+        """
+        Adds flag for whether the variant in PB. PBS P-value < 0.01 from gvatDB.
+        """
+    input:
+        rules.combine_batches.output,
+    output:
+        "results/snp-selex/snp-selex.combined.tsv",
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/flag_pbvar.stdout",
+        stderr="workflow/logs/flag_pbvar.stderr",
+    threads: 1
+    shell:
+        """
+        vawk '{{if($6 <= 0.01) {{print $0,1}} else {{print $0,0}} }}' {input} > {output}
+        """
