@@ -165,7 +165,7 @@ rule add_profile_info:
         """
     input:
         batch=rules.sort_batch.output,
-        targets="results/snp-selex/targets.txt",
+        targets="results/snp-selex/targets.sorted.txt",
     output:
         temp("results/snp-selex/add_profile_info_{batch}.tsv"),
     log:
