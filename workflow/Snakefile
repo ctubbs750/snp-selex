@@ -9,13 +9,6 @@ configfile: "config/config.yaml"
 min_version("7.32.4")
 
 
-# module genome:
-#     snakefile:
-#         "https://raw.githubusercontent.com/ctubbs750/genome/main/workflow/Snakefile"
-#     config:
-#         config
-
-
 module selex:
     snakefile:
         "rules/selex.smk"
@@ -24,9 +17,6 @@ module selex:
 
 
 # Import modules
-#use rule * from genome as genome_*
-
-
 use rule * from selex as selex_*
 
 
