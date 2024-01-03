@@ -204,6 +204,7 @@ rule add_oligo_bounds:
     message:
         """
         columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
+        Note: the arithmetic on the right oligo bound...this is to ensure the variant can be inlucded in the sliding window.
         """
     input:
         selex_data=rules.filter_long_motifs.output,
@@ -217,7 +218,7 @@ rule add_oligo_bounds:
     threads: 1
     shell:
         """
-        vawk '{{split($2, vid, "_"); print $0, vid[1], vid[2]-$9, vid[2]+$9}}' {input} > {output}
+        vawk '{{split($2, vid, "_"); print $0, vid[1], vid[2]-$9, vid[2]+$9-1}}' {input} > {output}
         """
 
 
