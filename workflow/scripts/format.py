@@ -71,6 +71,8 @@ def main():
         "vid_chrm",
         "vid_pos0",
         "vid_pos1",
+        "ref",
+        "alt",
         "profile",
         "oligo_seq",
         "tf",
