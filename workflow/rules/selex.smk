@@ -4,10 +4,13 @@ from snakemake.utils import min_version
 # Configuration
 configfile: "config/config.yaml"
 
+
 # Parameters
-BATCH_1_URL = config["SNP-SELEX"]["FILE_URLS"]["BATCH_1"]
-BATCH_2_URL = config["SNP-SELEX"]["FILE_URLS"]["BATCH_2"]
-PROFILES = [i.split("|")[1] for i in config["TFBS-SCAN"]["TARGETS"]]
+BATCH_1_URL = config["SNP-SELEX"]["file_urls"]["batch_1"]
+BATCH_2_URL = config["SNP-SELEX"]["file_urls"]["batch_2"]
+PROFILES = [i.split("|")[1] for i in config["TFBS-SCAN"]["targets"]]
+TARGETS = config["TFBS-SCAN"]["targets"]
+DELTA_SVM_SUPPLEMENT_URL = config["SNP-SELEX"]["file_urls"]["deltasvm_supplement"]
 
 # Settings
 min_version("7.32.4")
@@ -16,8 +19,53 @@ min_version("7.32.4")
 rule all:
     input:
         "results/snp-selex/targets.sorted.txt",
-        "results/snp-selex/snp-selex.combined.tsv",
+        "results/snp-selex/deltasvm.supplement.snvs.hg38.bed",
+        "results/snp-selex/snp-selex.combined.final.hg38.bed",
     default_target: True
+
+
+rule download_deltasvm_supplement:
+    message:
+        """
+        link 
+        https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03211-0/MediaObjects/41586_2021_3211_MOESM14_ESM.csv
+        """
+    output:
+        "resources/data/snp-selex/41586_2021_3211_MOESM14_ESM.csv",
+    params:
+        url=DELTA_SVM_SUPPLEMENT_URL,
+    conda:
+        "../envs/snp-selex.yaml"
+    threads: 1
+    log:
+        stdout="workflow/logs/download_deltasvm_supplement.stdout",
+        stderr="workflow/logs/download_deltasvm_supplement.stderr",
+    shell:
+        """
+        wget {params.url} -O {output}
+        """
+
+
+rule extract_deltasvm_supplement:
+    message:
+        """
+        Formats data to bed
+        """
+    input:
+        rules.download_deltasvm_supplement.output,
+    output:
+        "results/snp-selex/deltasvm.supplement.snvs.hg38.bed",
+    conda:
+        "../envs/snp-selex.yaml"
+    threads: 1
+    log:
+        stdout="workflow/logs/extract_deltasvm_supplement.stdout",
+        stderr="workflow/logs/extract_deltasvm_supplement.stderr",
+    shell:
+        """
+        awk -F',' '(NR>1) {{split($1, oligo, "_"); print oligo[1], oligo[2], oligo[3], oligo[4], $2, $3, $4, $5}}' OFS="\t" {input} |
+        vawk '{{ print $1, $2-1, $2, $3, $4, $5, $6, $7, $8 }}' > {output}
+        """
 
 
 rule install_datasets:
@@ -37,12 +85,15 @@ rule install_datasets:
     log:
         stdout="workflow/logs/install_datasets.stdout",
         stderr="workflow/logs/install_datasets.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
         curl {params.batch_1_url} -o {params.batch_1_out} && gunzip {params.batch_1_out}
         curl {params.batch_2_url} -o {params.batch_2_out} && gunzip {params.batch_2_out}
         """
+
 
 rule echo_targets:
     message:
@@ -52,17 +103,16 @@ rule echo_targets:
     output:
         temp("results/snp-selex/targets.txt"),
     params:
-        targets=config["TFBS-SCAN"]["TARGETS"],
+        targets=TARGETS,
     log:
         stdout="workflow/logs/echo_targets.stdout",
         stderr="workflow/logs/echo_targets.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
-    run:
-        with open(output[0], 'w') as outp:
-            for target in params.targets:
-                info = target.split("|")
-                line = f"{info[0]}\t{info[1]}\t{info[2]}\n"
-                outp.write(line)
+    script:
+        "../scripts/targets.py"
+
 
 rule sort_targets:
     message:
@@ -70,17 +120,20 @@ rule sort_targets:
         Sorts target list under JOIN specs.
         """
     input:
-        rules.echo_targets.output
+        rules.echo_targets.output,
     output:
         "results/snp-selex/targets.sorted.txt",
     log:
         stdout="workflow/logs/sort_targets.stdout",
         stderr="workflow/logs/sort_targets.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
         sort -t $'\t' -k 1b,1 {input} > {output}
         """
+
 
 rule format_batch_1:
     message:
@@ -94,7 +147,7 @@ rule format_batch_1:
         - last vawk split formats oligo coords into vid to match novel batch format 
         """
     input:
-      rules.install_datasets.output.batch_1
+        rules.install_datasets.output.batch_1,
     output:
         temp("results/snp-selex/format_batch_1.tsv"),
     conda:
@@ -102,6 +155,8 @@ rule format_batch_1:
     log:
         stdout="workflow/logs/format_batch_1.stdout",
         stderr="workflow/logs/format_batch_1.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
@@ -112,6 +167,7 @@ rule format_batch_1:
         vawk '{{split($2, oligo, "_"); print $1, oligo[1]"_"oligo[2]+20"_"$7"_"$8, $3, $4, $5, $6, "original"}}' > {output}
         """
 
+
 rule format_batch_2:
     message:
         """
@@ -121,7 +177,7 @@ rule format_batch_2:
         - vawk prints entire line, adds "novel" batch flag
         """
     input:
-        rules.install_datasets.output.batch_2
+        rules.install_datasets.output.batch_2,
     output:
         temp("results/snp-selex/format_batch_2.tsv"),
     conda:
@@ -129,12 +185,15 @@ rule format_batch_2:
     log:
         stdout="workflow/logs/format_batch_2.stdout",
         stderr="workflow/logs/format_batch_2.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
         tail -n +2 {input} |
         vawk '{{print $0, "novel"}}' > {output}
         """
+
 
 rule sort_batch:
     message:
@@ -144,17 +203,20 @@ rule sort_batch:
         Sort param -k 1b,1 is from recommendation from join people
         """
     input:
-         "results/snp-selex/format_batch_{batch}.tsv",
+        "results/snp-selex/format_batch_{batch}.tsv",
     output:
         temp("results/snp-selex/sorted_batch_{batch}.tsv"),
     log:
         stdout="workflow/logs/sort_batch_{batch}.stdout",
         stderr="workflow/logs/sort_batch_{batch}.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
         cat {input} | tr -s '\t' | sort -t $'\t' -k 1b,1 > {output}
         """
+
 
 rule add_profile_info:
     message:
@@ -171,6 +233,8 @@ rule add_profile_info:
     log:
         stdout="workflow/logs/add_profile_info_{batch}.stdout",
         stderr="workflow/logs/add_profile_info_{batch}.stderr",
+    conda:
+        "../envs/snp-selex.yaml"
     threads: 1
     shell:
         """
@@ -209,7 +273,7 @@ rule add_oligo_bounds:
     input:
         selex_data=rules.filter_long_motifs.output,
     output:
-        "results/snp-selex/add_oligo_bounds_{batch}.tsv",
+        temp("results/snp-selex/add_oligo_bounds_{batch}.tsv"),
     conda:
         "../envs/snp-selex.yaml"
     log:
@@ -241,7 +305,29 @@ rule combine_batches:
     shell:
         """
         cat {input.batch_1} {input.batch_2} > {output}
-        """ 
+        """
+
+
+rule flag_bound:
+    message:
+        """
+        Adds flag for whether the REF allele is bound. OBS P-value < 0.05 from gvatDB.
+        """
+    input:
+        rules.combine_batches.output,
+    output:
+        temp("results/snp-selex/snp-selex.combined.bound.tsv"),
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/flag_pbvar.stdout",
+        stderr="workflow/logs/flag_pbvar.stderr",
+    threads: 1
+    shell:
+        """
+        vawk '{{if($4 <= 0.05) {{print $0,1}} else {{print $0,0}} }}' {input} > {output}
+        """
+
 
 rule flag_pbvar:
     message:
@@ -249,9 +335,9 @@ rule flag_pbvar:
         Adds flag for whether the variant in PB. PBS P-value < 0.01 from gvatDB.
         """
     input:
-        rules.combine_batches.output,
+        rules.flag_bound.output,
     output:
-        "results/snp-selex/snp-selex.combined.tsv",
+        temp("results/snp-selex/snp-selex.combined.pbvar.tsv"),
     conda:
         "../envs/snp-selex.yaml"
     log:
@@ -262,3 +348,69 @@ rule flag_pbvar:
         """
         vawk '{{if($6 <= 0.01) {{print $0,1}} else {{print $0,0}} }}' {input} > {output}
         """
+
+
+rule make_oligo_fasta:
+    message:
+        """
+        Note ID formatting for 4th column in BED
+        """
+    input:
+        selex=rules.flag_pbvar.output,
+        genome="resources/data/genome/hg19/hg19.fa.gz",
+    output:
+        temp("results/snp-selex/make_oligo_fasta.fa"),
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/make_oligo_fasta.stdout",
+        stderr="workflow/logs/make_oligo_fasta.stderr",
+    threads: 1
+    shell:
+        """
+        vawk '{{print $10, $11, $12, $2"-"$8"-"$9}}' {input.selex} |
+        bedtools getfasta -fi {input.genome} -bed stdin -nameOnly > {output}
+        """
+
+
+rule add_oligo_sequence:
+    message:
+        """
+        Adds oligo sequence from FASTA to matrix
+        """
+    input:
+        selex=rules.flag_pbvar.output,
+        fasta=rules.make_oligo_fasta.output,
+    output:
+        main=temp("results/snp-selex/snp-selex.combined.final.hg38.tsv"),
+        seqs=temp("results/snp-selex/sequences.tsv"),
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/add_oligo_sequence.stdout",
+        stderr="workflow/logs/add_oligo_sequence.stderr",
+    threads: 1
+    shell:
+        """
+        grep -v '>' {input.fasta} > {output.seqs} &&
+        paste {input.selex} {output.seqs} -d $'\t' > {output.main}
+        """
+
+
+rule final_format:
+    message:
+        """
+        Formats results to BED+
+        """
+    input:
+        rules.add_oligo_sequence.output,
+    output:
+        "results/snp-selex/snp-selex.combined.final.hg38.bed",
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/final_format.stdout",
+        stderr="workflow/logs/final_format.stderr",
+    threads: 1
+    script:
+        "../scripts/format.py"
