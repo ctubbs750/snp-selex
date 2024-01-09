@@ -1,7 +1,0 @@
-Building DAG of jobs...
-MissingInputException in rule selex_add_ref_sequence in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 168:
-Missing input files for rule selex_add_ref_sequence:
-    output: results/snp-selex/add_ref_sequence_novel.tsv, results/snp-selex/novel_seqs.tsv
-    wildcards: batch=novel
-    affected files:
-        resources/data/genome/hg38/hg38.fa.gz
