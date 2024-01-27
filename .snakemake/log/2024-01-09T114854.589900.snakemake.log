@@ -1,0 +1,129 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment workflow/envs/snp-selex.yaml...
+Downloading and installing remote packages.
+Environment for /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/../envs/snp-selex.yaml created (location: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_)
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                         count
+------------------------  -------
+all                             1
+selex_add_oligo_bounds          2
+selex_add_oligo_sequence        1
+selex_add_profile_info          2
+selex_combine_batches           1
+selex_echo_targets              1
+selex_filter_long_motifs        2
+selex_flag_bound                1
+selex_flag_pbvar                1
+selex_format_batch_1            1
+selex_format_batch_2            1
+selex_install_datasets          1
+selex_make_oligo_fasta          1
+selex_sort_batch                2
+selex_sort_targets              1
+total                          19
+
+Select jobs to execute...
+
+[Tue Jan  9 11:50:04 2024]
+Job 2: 
+        Saves target list as tab delimited file
+        
+Reason: Missing output files: results/snp-selex/targets.txt; Code has changed since last execution; Params have changed since last execution
+
+[Tue Jan  9 11:50:05 2024]
+Job 12: 
+        Download and upack selex data across both batches. 
+        Batch_1 is original and batch_2 is novel.
+        
+Reason: Missing output files: resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv, resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+[Tue Jan  9 11:50:06 2024]
+Finished job 2.
+1 of 19 steps (5%) done
+Select jobs to execute...
+
+[Tue Jan  9 11:50:06 2024]
+Job 1: 
+        Sorts target list under JOIN specs.
+        
+Reason: Missing output files: results/snp-selex/targets.sorted.txt; Input files updated by another job: results/snp-selex/targets.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+[Tue Jan  9 11:50:06 2024]
+Finished job 1.
+2 of 19 steps (11%) done
+Removing temporary output results/snp-selex/targets.txt.
+[Tue Jan  9 11:50:13 2024]
+Finished job 12.
+3 of 19 steps (16%) done
+Select jobs to execute...
+
+[Tue Jan  9 11:50:13 2024]
+Job 17: 
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
+        Notes:
+        - tail removes header
+        - vawk prints entire line, adds "novel" batch flag
+        
+Reason: Missing output files: results/snp-selex/format_batch_2.tsv; Input files updated by another job: resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv; Software environment definition has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+
+[Tue Jan  9 11:50:13 2024]
+Job 11: 
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
+        Notes:
+        - tail removes header
+        - tr replaces :
+        - vawk first split grabs TF from oligo ID
+        - vawk gsub replace - in column 2
+        - last vawk split formats oligo coords into vid to match novel batch format 
+        
+Reason: Missing output files: results/snp-selex/format_batch_1.tsv; Input files updated by another job: resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv; Software environment definition has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+[Tue Jan  9 11:50:13 2024]
+Error in rule selex_format_batch_2:
+    jobid: 17
+    input: resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv
+    output: results/snp-selex/format_batch_2.tsv
+    log: workflow/logs/format_batch_2.stdout, workflow/logs/format_batch_2.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+    shell:
+        
+        tail -n +2 resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv |
+        vawk '{print $0, "novel"}' > results/snp-selex/format_batch_2.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job selex_format_batch_2 since they might be corrupted:
+results/snp-selex/format_batch_2.tsv
+[Tue Jan  9 11:50:13 2024]
+Error in rule selex_format_batch_1:
+    jobid: 11
+    input: resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv
+    output: results/snp-selex/format_batch_1.tsv
+    log: workflow/logs/format_batch_1.stdout, workflow/logs/format_batch_1.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/e561352b4881ecb0f0bd3f2a5b9b90dc_
+    shell:
+        
+        tail -n +2 resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv |
+        tr ":" "_" |
+        vawk '{split($1, id, "."); print id[1], $2, $3, $4, $9, $10, $5, $6}' |
+        vawk '{gsub(/\-/, "_", $2); print $0}' |
+        vawk '{split($2, oligo, "_"); print $1, oligo[1]"_"oligo[2]+20"_"$7"_"$8, $3, $4, $5, $6, "original"}' > results/snp-selex/format_batch_1.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job selex_format_batch_1 since they might be corrupted:
+results/snp-selex/format_batch_1.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-09T114854.589900.snakemake.log

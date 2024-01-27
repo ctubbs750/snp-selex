@@ -1,4 +1,4 @@
-#!/usr/bin/python
+"""d"""
 
 import pandas as pd
 
@@ -7,9 +7,83 @@ import pandas as pd
 INPUT = snakemake.input[0]  # type: ignore
 OUTPUT = snakemake.output[0]  # type: ignore
 
-###
-# Functions
-###
+
+# ------------- #
+# Functions     #
+# ------------- #
+
+
+def read_selex_data(input_file, fields, dtypes):
+    """Reads the selex data from the input file.
+
+    Args:
+        input_file (str): The path to the input file.
+        fields (list): The list of field names.
+        dtypes (list): The list of data types for the fields.
+
+    Returns:
+        DataFrame: The selex data.
+    """
+    return pd.read_csv(
+        input_file,
+        header=None,
+        sep="\t",
+        engine="c",
+        dtype=dict(zip(fields, dtypes)),
+        names=fields,
+    )
+
+
+def format_selex_data(selex):
+    """Formats the selex data.
+
+    Args:
+        selex (DataFrame): The selex data.
+
+    Returns:
+        DataFrame: The formatted selex data.
+    """
+    # Get variant info from vid
+    selex[["vid_chrm", "vid_pos1", "ref", "alt"]] = selex["vid"].str.split(
+        "_", expand=True
+    )
+
+    # Add pos0
+    selex["vid_pos0"] = selex["vid_pos1"].astype(int) - 1
+
+    # change seq to upper just cause
+    selex["oligo_seq"] = selex["oligo_seq"].str.upper()
+
+    # Format into BED and discard uneeded fields
+    order = [
+        "vid_chrm",
+        "vid_pos0",
+        "vid_pos1",
+        "ref",
+        "alt",
+        "oligo_seq",
+        "tf",
+        "batch",
+        "obs",
+        "obs_p",
+        "pbs",
+        "pbs_p",
+        "obs_bound",
+        "pbSNP",
+    ]
+
+    # Return bedplus
+    return selex[order]
+
+
+def write_selex_data(selex, output_file):
+    """Writes the selex data to the output file.
+
+    Args:
+        selex (DataFrame): The selex data.
+        output_file (str): The path to the output file.
+    """
+    selex.to_csv(output_file, sep="\t", index=False)
 
 
 def main():
@@ -23,8 +97,6 @@ def main():
         "pbs",
         "pbs_p",
         "batch",
-        "profile",
-        "profile_bp",
         "oligo_chrm",
         "oligo_pos0",
         "oligo_pos1",
@@ -32,6 +104,7 @@ def main():
         "pbSNP",
         "oligo_seq",
     ]
+    # Dtypes
     dtypes = [
         str,
         str,
@@ -42,8 +115,6 @@ def main():
         str,
         str,
         int,
-        str,
-        int,
         int,
         int,
         int,
@@ -51,44 +122,13 @@ def main():
     ]
 
     # Read input
-    selex = pd.read_csv(
-        INPUT,
-        header=None,
-        sep="\t",
-        engine="c",
-        dtype=dict(zip(fields, dtypes)),
-        names=fields,
-    )
+    selex = read_selex_data(INPUT, fields, dtypes)
 
-    # Get variant info from vid
-    selex[["vid_chrm", "vid_pos1", "ref", "alt"]] = selex["vid"].str.split(
-        "_", expand=True
-    )
-    selex["vid_pos0"] = selex["vid_pos1"].astype(int) - 1
-
-    # Format into BED and discard uneeded fields
-    order = [
-        "vid_chrm",
-        "vid_pos0",
-        "vid_pos1",
-        "ref",
-        "alt",
-        "profile",
-        "oligo_seq",
-        "tf",
-        "profile_bp",
-        "batch",
-        "obs",
-        "obs_p",
-        "pbs",
-        "pbs_p",
-        "obs_bound",
-        "pbSNP",
-    ]
-    selex = selex[order]
+    # Format data
+    selex = format_selex_data(selex)
 
     # Write out
-    selex.to_csv(OUTPUT, sep="\t", index=False)
+    write_selex_data(selex, OUTPUT)
 
 
 # ------------- #

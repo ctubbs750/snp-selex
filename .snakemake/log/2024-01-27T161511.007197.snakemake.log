@@ -1,0 +1,40 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+selex_all                 1
+selex_final_format        1
+total                     2
+
+Select jobs to execute...
+
+[Sat Jan 27 16:15:17 2024]
+Job 3: 
+        Formats results to BED+
+        
+Reason: Missing output files: results/snp-selex/snp-selex.combined.final.hg38.bed
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Sat Jan 27 16:15:49 2024]
+Finished job 3.
+1 of 2 steps (50%) done
+Removing temporary output results/snp-selex/sequences.tsv.
+Removing temporary output results/snp-selex/snp-selex.combined.final.hg38.tsv.
+Select jobs to execute...
+
+[Sat Jan 27 16:15:49 2024]
+localrule selex_all:
+    input: results/snp-selex/deltasvm.supplement.snvs.hg19.bed, results/snp-selex/snp-selex.combined.final.hg38.bed
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/snp-selex.combined.final.hg38.bed
+    resources: tmpdir=/tmp
+
+[Sat Jan 27 16:15:49 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-01-27T161511.007197.snakemake.log

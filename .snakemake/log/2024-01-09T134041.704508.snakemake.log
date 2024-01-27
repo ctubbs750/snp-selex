@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                  count
+---------------------------------  -------
+all                                      1
+selex_extract_deltasvm_supplement        1
+total                                    2
+
+Select jobs to execute...
+
+[Tue Jan  9 13:40:50 2024]
+Job 3: 
+        Formats data to bed
+        
+Reason: Code has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/451e9b4fc947baa268fe7a385fb71f2b_
+[Tue Jan  9 13:41:04 2024]
+Finished job 3.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Tue Jan  9 13:41:04 2024]
+localrule all:
+    input: results/snp-selex/targets.sorted.txt, results/snp-selex/deltasvm.supplement.snvs.hg38.bed, results/snp-selex/snp-selex.combined.final.hg38.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/deltasvm.supplement.snvs.hg38.bed
+    resources: tmpdir=/tmp
+
+[Tue Jan  9 13:41:04 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-01-09T134041.704508.snakemake.log

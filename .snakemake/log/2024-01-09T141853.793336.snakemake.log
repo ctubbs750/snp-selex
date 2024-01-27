@@ -1,0 +1,332 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment workflow/envs/snp-selex.yaml...
+Downloading and installing remote packages.
+Environment for /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/../envs/snp-selex.yaml created (location: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_)
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                   count
+----------------------------------  -------
+all                                       1
+selex_add_oligo_bounds                    2
+selex_add_oligo_sequence                  1
+selex_add_profile_info                    2
+selex_combine_batches                     1
+selex_download_deltasvm_supplement        1
+selex_echo_targets                        1
+selex_extract_deltasvm_supplement         1
+selex_filter_long_motifs                  2
+selex_final_format                        1
+selex_flag_bound                          1
+selex_flag_pbvar                          1
+selex_format_batch_1                      1
+selex_format_batch_2                      1
+selex_install_datasets                    1
+selex_make_oligo_fasta                    1
+selex_sort_batch                          2
+selex_sort_targets                        1
+total                                    22
+
+Select jobs to execute...
+
+[Tue Jan  9 14:20:15 2024]
+Job 2: 
+        Saves target list as tab delimited file
+        
+Reason: Missing output files: results/snp-selex/targets.txt; Software environment definition has changed since last execution
+
+[Tue Jan  9 14:20:15 2024]
+Job 4: 
+        link 
+        https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03211-0/MediaObjects/41586_2021_3211_MOESM14_ESM.csv
+        
+Reason: Software environment definition has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+
+[Tue Jan  9 14:20:15 2024]
+Job 15: 
+        Download and upack selex data across both batches. 
+        Batch_1 is original and batch_2 is novel.
+        
+Reason: Software environment definition has changed since last execution
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:16 2024]
+Finished job 2.
+1 of 22 steps (5%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:20:16 2024]
+Job 1: 
+        Sorts target list under JOIN specs.
+        
+Reason: Input files updated by another job: results/snp-selex/targets.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:16 2024]
+Finished job 4.
+2 of 22 steps (9%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:20:16 2024]
+Job 3: 
+        Formats data to bed
+        
+Reason: Input files updated by another job: resources/data/snp-selex/41586_2021_3211_MOESM14_ESM.csv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:17 2024]
+Finished job 1.
+3 of 22 steps (14%) done
+Removing temporary output results/snp-selex/targets.txt.
+[Tue Jan  9 14:20:23 2024]
+Finished job 15.
+4 of 22 steps (18%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:20:23 2024]
+Job 20: 
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
+        Notes:
+        - tail removes header
+        - vawk prints entire line, adds "novel" batch flag
+        
+Reason: Missing output files: results/snp-selex/format_batch_2.tsv; Input files updated by another job: resources/data/snp-selex/GSE118725_pbs.novel_batch.tsv
+
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:23 2024]
+Job 14: 
+        Columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pbs-pval, batch
+        Notes:
+        - tail removes header
+        - tr replaces :
+        - vawk first split grabs TF from oligo ID
+        - vawk gsub replace - in column 2
+        - last vawk split formats oligo coords into vid to match novel batch format 
+        
+Reason: Missing output files: results/snp-selex/format_batch_1.tsv; Input files updated by another job: resources/data/snp-selex/GSE118725_pbs.obs_pval05.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:26 2024]
+Finished job 20.
+5 of 22 steps (23%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:20:26 2024]
+Job 19: 
+        Alphabetical sort on TF common name, necessary for merging laters.
+        Note: tr is to ensure proper tab delimited. 
+        Sort param -k 1b,1 is from recommendation from join people
+        
+Reason: Missing output files: results/snp-selex/sorted_batch_2.tsv; Input files updated by another job: results/snp-selex/format_batch_2.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:27 2024]
+Finished job 3.
+6 of 22 steps (27%) done
+[Tue Jan  9 14:20:33 2024]
+Finished job 19.
+7 of 22 steps (32%) done
+Removing temporary output results/snp-selex/format_batch_2.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:33 2024]
+Job 18: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge;  to left merge add -a1 -e "." flag for join
+        tr is to convert output to tab delim
+        
+Reason: Missing output files: results/snp-selex/add_profile_info_2.tsv; Input files updated by another job: results/snp-selex/sorted_batch_2.tsv, results/snp-selex/targets.sorted.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:33 2024]
+Finished job 14.
+8 of 22 steps (36%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:20:33 2024]
+Job 13: 
+        Alphabetical sort on TF common name, necessary for merging laters.
+        Note: tr is to ensure proper tab delimited. 
+        Sort param -k 1b,1 is from recommendation from join people
+        
+Reason: Missing output files: results/snp-selex/sorted_batch_1.tsv; Input files updated by another job: results/snp-selex/format_batch_1.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:36 2024]
+Finished job 18.
+9 of 22 steps (41%) done
+Removing temporary output results/snp-selex/sorted_batch_2.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:36 2024]
+Job 17: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_2.tsv; Input files updated by another job: results/snp-selex/add_profile_info_2.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:38 2024]
+Finished job 17.
+10 of 22 steps (45%) done
+Removing temporary output results/snp-selex/add_profile_info_2.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:38 2024]
+Job 16: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
+        Note: the arithmetic on the right oligo bound...this is to ensure the variant can be inlucded in the sliding window.
+        
+Reason: Missing output files: results/snp-selex/add_oligo_bounds_2.tsv; Input files updated by another job: results/snp-selex/filter_long_motifs_2.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:41 2024]
+Finished job 13.
+11 of 22 steps (50%) done
+Removing temporary output results/snp-selex/format_batch_1.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:41 2024]
+Job 12: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
+        note inner merge;  to left merge add -a1 -e "." flag for join
+        tr is to convert output to tab delim
+        
+Reason: Missing output files: results/snp-selex/add_profile_info_1.tsv; Input files updated by another job: results/snp-selex/sorted_batch_1.tsv, results/snp-selex/targets.sorted.txt
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:42 2024]
+Finished job 16.
+12 of 22 steps (55%) done
+Removing temporary output results/snp-selex/filter_long_motifs_2.tsv.
+[Tue Jan  9 14:20:45 2024]
+Finished job 12.
+13 of 22 steps (59%) done
+Removing temporary output results/snp-selex/sorted_batch_1.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:45 2024]
+Job 11: 
+        removes motifs that have PWM > 20
+        
+Reason: Missing output files: results/snp-selex/filter_long_motifs_1.tsv; Input files updated by another job: results/snp-selex/add_profile_info_1.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:48 2024]
+Finished job 11.
+14 of 22 steps (64%) done
+Removing temporary output results/snp-selex/add_profile_info_1.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:48 2024]
+Job 10: 
+        columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
+        Note: the arithmetic on the right oligo bound...this is to ensure the variant can be inlucded in the sliding window.
+        
+Reason: Missing output files: results/snp-selex/add_oligo_bounds_1.tsv; Input files updated by another job: results/snp-selex/filter_long_motifs_1.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:52 2024]
+Finished job 10.
+15 of 22 steps (68%) done
+Removing temporary output results/snp-selex/filter_long_motifs_1.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:52 2024]
+Job 9: 
+        Combines data from both batches into single file.
+        
+Reason: Missing output files: results/snp-selex/combine_batches.tsv; Input files updated by another job: results/snp-selex/add_oligo_bounds_2.tsv, results/snp-selex/add_oligo_bounds_1.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:53 2024]
+Finished job 9.
+16 of 22 steps (73%) done
+Removing temporary output results/snp-selex/add_oligo_bounds_1.tsv.
+Removing temporary output results/snp-selex/add_oligo_bounds_2.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:53 2024]
+Job 8: 
+        Adds flag for whether the REF allele is bound. OBS P-value < 0.05 from gvatDB.
+        
+Reason: Missing output files: results/snp-selex/snp-selex.combined.bound.tsv; Input files updated by another job: results/snp-selex/combine_batches.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:20:58 2024]
+Finished job 8.
+17 of 22 steps (77%) done
+Removing temporary output results/snp-selex/combine_batches.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:20:58 2024]
+Job 7: 
+        Adds flag for whether the variant in PB. PBS P-value < 0.01 from gvatDB.
+        
+Reason: Missing output files: results/snp-selex/snp-selex.combined.pbvar.tsv; Input files updated by another job: results/snp-selex/snp-selex.combined.bound.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:21:03 2024]
+Finished job 7.
+18 of 22 steps (82%) done
+Removing temporary output results/snp-selex/snp-selex.combined.bound.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:21:03 2024]
+Job 21: 
+        Note ID formatting for 4th column in BED
+        
+Reason: Missing output files: results/snp-selex/make_oligo_fasta.fa; Input files updated by another job: results/snp-selex/snp-selex.combined.pbvar.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:25:54 2024]
+Finished job 21.
+19 of 22 steps (86%) done
+Select jobs to execute...
+
+[Tue Jan  9 14:25:54 2024]
+Job 6: 
+        Adds oligo sequence from FASTA to matrix
+        
+Reason: Input files updated by another job: results/snp-selex/snp-selex.combined.pbvar.tsv, results/snp-selex/make_oligo_fasta.fa
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:25:55 2024]
+Finished job 6.
+20 of 22 steps (91%) done
+Removing temporary output results/snp-selex/snp-selex.combined.pbvar.tsv.
+Removing temporary output results/snp-selex/make_oligo_fasta.fa.
+Select jobs to execute...
+
+[Tue Jan  9 14:25:55 2024]
+Job 5: 
+        Formats results to BED+
+        
+Reason: Missing output files: results/snp-selex/snp-selex.combined.final.hg38.bed; Input files updated by another job: results/snp-selex/sequences.tsv, results/snp-selex/snp-selex.combined.final.hg38.tsv
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/449f9d46ef72aa1f59d5540553f8b467_
+[Tue Jan  9 14:26:07 2024]
+Finished job 5.
+21 of 22 steps (95%) done
+Removing temporary output results/snp-selex/sequences.tsv.
+Removing temporary output results/snp-selex/snp-selex.combined.final.hg38.tsv.
+Select jobs to execute...
+
+[Tue Jan  9 14:26:07 2024]
+localrule all:
+    input: results/snp-selex/targets.sorted.txt, results/snp-selex/deltasvm.supplement.snvs.hg38.bed, results/snp-selex/snp-selex.combined.final.hg38.bed
+    jobid: 0
+    reason: Input files updated by another job: results/snp-selex/snp-selex.combined.final.hg38.bed, results/snp-selex/deltasvm.supplement.snvs.hg38.bed, results/snp-selex/targets.sorted.txt
+    resources: tmpdir=/tmp
+
+[Tue Jan  9 14:26:07 2024]
+Finished job 0.
+22 of 22 steps (100%) done
+Complete log: .snakemake/log/2024-01-09T141853.793336.snakemake.log

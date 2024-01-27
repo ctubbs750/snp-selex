@@ -20,11 +20,11 @@ module selex:
     snakefile:
         "rules/selex.smk"
     config:
-        config
+        config["SNP-SELEX"]
 
 
 # Import modules
-#use rule * from genome as genome_*
+# use rule * from genome as genome_*
 
 
 use rule * from selex as selex_*
@@ -38,4 +38,3 @@ use rule * from selex as selex_*
 rule all:
     input:
         rules.selex_all.input,
-    default_target: True

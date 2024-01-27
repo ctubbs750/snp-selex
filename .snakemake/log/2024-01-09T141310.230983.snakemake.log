@@ -1,0 +1,38 @@
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however crucial for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Using shell: /usr/bin/bash
+Provided cores: 12
+Rules claiming more threads will be scaled down.
+Job stats:
+job                   count
+------------------  -------
+all                       1
+selex_final_format        1
+total                     2
+
+Select jobs to execute...
+
+[Tue Jan  9 14:13:14 2024]
+Job 5: 
+        Formats results to BED+
+        
+Reason: Missing output files: results/snp-selex/snp-selex.combined.final.hg38.bed
+
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/451e9b4fc947baa268fe7a385fb71f2b_
+Activating conda environment: ../../../../../../../../../../../../../home/tubbsca/snakemake_condas/451e9b4fc947baa268fe7a385fb71f2b_
+[Tue Jan  9 14:13:16 2024]
+Error in rule selex_final_format:
+    jobid: 5
+    input: results/snp-selex/snp-selex.combined.final.hg38.tsv, results/snp-selex/sequences.tsv
+    output: results/snp-selex/snp-selex.combined.final.hg38.bed
+    log: workflow/logs/final_format.stdout, workflow/logs/final_format.stderr (check log file(s) for error details)
+    conda-env: /home/tubbsca/snakemake_condas/451e9b4fc947baa268fe7a385fb71f2b_
+
+RuleException:
+CalledProcessError in file /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk, line 416:
+Command 'source /panfs/accrepfs.vampire/home/tubbsca/miniforge-pypy3/bin/activate '/home/tubbsca/snakemake_condas/451e9b4fc947baa268fe7a385fb71f2b_'; set -euo pipefail;  python /panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/.snakemake/scripts/tmpzdqky__v.format.py' returned non-zero exit status 1.
+  File "/panfs/accrepfs.vampire/data/ruderferlab/projects/biovu/cnv/cre/CTCF-Variant-Annotation/snakemake/workflows/common/snp-selex/workflow/rules/selex.smk", line 416, in __rule_final_format
+  File "/accre/arch/easybuild/software/BinDist/Anaconda3/2022.05/lib/python3.9/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-09T141310.230983.snakemake.log
