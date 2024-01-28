@@ -35,6 +35,6 @@ use rule * from selex as selex_*
 ###
 
 
-rule all:
-    input:
-        rules.selex_all.input,
+# rule all:
+#     input:
+#         rules.selex_all.input,
