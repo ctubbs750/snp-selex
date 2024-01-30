@@ -83,7 +83,7 @@ def write_selex_data(selex, output_file):
         selex (DataFrame): The selex data.
         output_file (str): The path to the output file.
     """
-    selex.to_csv(output_file, sep="\t", index=False)
+    selex.to_csv(output_file, sep="\t", index=False, header=None)
 
 
 def main():
@@ -126,6 +126,21 @@ def main():
 
     # Format data
     selex = format_selex_data(selex)
+
+    # Add VID in hg19
+    selex["vid_hg19"] = (
+        selex["vid_chrm"]
+        + ":"
+        + selex["vid_pos0"].astype(str)
+        + "-"
+        + selex["vid_pos1"].astype(str)
+        + "-"
+        + selex["ref"].astype(str)
+        + "-"
+        + selex["alt"].astype(str)
+        + "-"
+        + selex["tf"].astype(str)
+    )
 
     # Write out
     write_selex_data(selex, OUTPUT)

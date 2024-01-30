@@ -16,6 +16,7 @@ INSTALL_DIR = config["install_dir"]
 PROCESS_DIR = config["process_dir"]
 BATCH_1_URL = config["file_urls"]["batch_1"]
 BATCH_2_URL = config["file_urls"]["batch_2"]
+LIFTCHAIN_URL = config["file_urls"]["liftchain"]
 DELTASVM__URL = config["file_urls"]["deltasvm_supplement"]
 
 # ------------- #
@@ -24,6 +25,9 @@ DELTASVM__URL = config["file_urls"]["deltasvm_supplement"]
 
 # Reference genome
 GENOME = path.join("resources/data/genome/hg19", "hg19.fa.gz")
+
+# Liftchain
+LIFTCHAIN = path.join(INSTALL_DIR, "hg19ToHg38.over.chain.gz")
 
 # DeltaSVM supplement
 DELTASVM_INSTALL = path.join(INSTALL_DIR, "41586_2021_3211_MOESM14_ESM.csv")
@@ -50,9 +54,12 @@ FLAG_PBVAR = path.join(PROCESS_DIR, "flag_pbvar.tsv")
 OLIGO_FASTA = path.join(PROCESS_DIR, "oligo_seqs.fa")
 SEQUENCES = path.join(PROCESS_DIR, "sequences.tsv")
 
-# Final
+# Final - hg19
 FINAL_OUTPUT = path.join(PROCESS_DIR, "snp-selex.combined.final.hg19.tsv")
 FINAL_FORMAT = path.join(PROCESS_DIR, "snp-selex.combined.final.hg19.bed")
+
+# Final for real - hg38
+LIFTUP_OUTPUT = path.join(PROCESS_DIR, "snp-selex.combined.final.hg38.tsv")
 
 # ------------- #
 # Rules         #
@@ -62,7 +69,25 @@ FINAL_FORMAT = path.join(PROCESS_DIR, "snp-selex.combined.final.hg19.bed")
 rule all:
     input:
         DELTASVM_PROCESS,
-        FINAL_FORMAT,
+        LIFTUP_OUTPUT,
+
+
+rule download_liftchain:
+    message:
+        """
+        Downloads liftchain from UCSC
+        """
+    output:
+        LIFTCHAIN,
+    params:
+        url=LIFTCHAIN_URL,
+    conda:
+        "../envs/snp-selex.yaml"
+    log:
+        stdout="workflow/logs/download_deltasvm_supplement.stdout",
+        stderr="workflow/logs/download_deltasvm_supplement.stderr",
+    shell:
+        "wget {params.url} -O {output}"
 
 
 rule download_deltasvm_supplement:
@@ -182,118 +207,6 @@ rule format_batch_2:
         """
         tail -n +2 {input} | vawk '{{print $0, "novel"}}' > {output}
         """
-
-
-# rule sort_batch:
-#     message:
-#         """
-#         Alphabetical sort on TF common name, necessary for merging laters.
-#         Note: tr is to ensure proper tab delimited.
-#         Sort param -k 1b,1 is from recommendation from join people
-#         """
-#     input:
-#         "results/snp-selex/format_batch_{batch}.tsv",
-#     output:
-#         temp("results/snp-selex/sorted_batch_{batch}.tsv"),
-#     log:
-#         stdout="workflow/logs/sort_batch_{batch}.stdout",
-#         stderr="workflow/logs/sort_batch_{batch}.stderr",
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     threads: 1
-#     shell:
-#         """
-#         cat {input} | tr -s '\t' | sort -t $'\t' -k 1b,1 > {output}
-#         """
-
-
-# rule add_profile_info:
-#     message:
-#         """
-#         columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp
-#         note inner merge;  to left merge add -a1 -e "." flag for join
-#         tr is to convert output to tab delim
-#         """
-#     input:
-#         batch=rules.sort_batch.output,
-#         targets="results/snp-selex/targets.sorted.txt",
-#     output:
-#         temp("results/snp-selex/add_profile_info_{batch}.tsv"),
-#     log:
-#         stdout="workflow/logs/add_profile_info_{batch}.stdout",
-#         stderr="workflow/logs/add_profile_info_{batch}.stderr",
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     threads: 1
-#     shell:
-#         """
-#         join -o 1.1,1.2,1.3,1.4,1.5,1.6,1.7,2.2,2.3 {input.batch} {input.targets} |
-#         tr -s ' ' '\t' > {output}
-#         """
-
-# rule add_profile_info:
-#     message:
-#         """
-
-#         """
-#     input:
-#         batch=rules.sort_batch.output,
-#         targets="results/snp-selex/targets.sorted.txt",
-#     output:
-#         temp("results/snp-selex/add_profile_info_{batch}.tsv"),
-#     log:
-#         stdout="workflow/logs/add_profile_info_{batch}.stdout",
-#         stderr="workflow/logs/add_profile_info_{batch}.stderr",
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     threads: 1
-#     shell:
-#         """
-#         join -o 1.1,1.2,1.3,1.4,1.5,1.6,1.7,2.2,2.3 {input.batch} {input.targets} |
-#         tr -s ' ' '\t' > {output}
-#         """
-
-# rule filter_long_motifs:
-#     message:
-#         """
-#         removes motifs that have PWM > 20
-#         """
-#     input:
-#         selex_data=rules.add_profile_info.output,
-#     output:
-#         temp("results/snp-selex/filter_long_motifs_{batch}.tsv"),
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     log:
-#         stdout="workflow/logs/filter_long_motifs_{batch}.stdout",
-#         stderr="workflow/logs/filter_long_motifs_{batch}.stderr",
-#     threads: 1
-#     shell:
-#         """
-#         vawk '{{if($9 <= 20) print $0}}' {input} > {output}
-#         """
-
-
-# rule add_oligo_bounds:
-#     message:
-#         """
-#         columns will be: tf, snp, oligo_auc, oligo_pval, pbs, pval, batch, profile, length_bp, oligo_chrm, oligo_lbound, oligo_rbound
-#         Note: the arithmetic on the right oligo bound...this is to ensure the variant can be inlucded in the sliding window.
-#         """
-#     input:
-#         selex_data=rules.filter_long_motifs.output,
-#     output:
-#         temp("results/snp-selex/add_oligo_bounds_{batch}.tsv"),
-#     conda:
-#         "../envs/snp-selex.yaml"
-#     log:
-#         stdout="workflow/logs/add_oligo_bounds_{batch}.stdout",
-#         stderr="workflow/logs/add_oligo_bounds_{batch}.stderr",
-#     threads: 1
-#     shell:
-#         """
-#         vawk '{{split($2, vid, "_"); print $0, vid[1], vid[2]-$9, vid[2]+$9-1}}' {input} > {output}
-#         """
 
 
 rule add_oligo_bounds:
@@ -440,3 +353,28 @@ rule final_format:
         stderr="workflow/logs/final_format.stderr",
     script:
         "../scripts/format.py"
+
+
+rule liftup_variants:
+    message:
+        """
+        Lifts up variants to hg38
+        """
+    input:
+        selex=rules.final_format.output,
+        chain=LIFTCHAIN,
+    output:
+        mapped=LIFTUP_OUTPUT,
+        unmapped=temp("unMapped"),
+    conda:
+        "../envs/liftover.yaml"
+    log:
+        stdout="workflow/logs/final_format.stdout",
+        stderr="workflow/logs/final_format.stderr",
+    shell:
+        """
+        liftOver {input.selex} {input.chain} -bedPlus=3 {output.mapped} {output.unmapped}
+        """
+
+
+#liftOver snp-selex.combined.final.hg19.bed resources/data/snp-selex/hg19ToHg38.over.chain.gz -bedPlus=3 tst.hg38.bed unMapped

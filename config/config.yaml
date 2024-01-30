@@ -7,6 +7,7 @@ SNP-SELEX:
     batch_1: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE118nnn/GSE118725/suppl/GSE118725%5Fpbs.obs%5Fpval05.tsv.gz
     batch_2: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE118nnn/GSE118725/suppl/GSE118725%5Fpbs.novel%5Fbatch.tsv.gz
     deltasvm_supplement: https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03211-0/MediaObjects/41586_2021_3211_MOESM14_ESM.csv
+    liftchain: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/hg19ToHg38.over.chain.gz
 
 GENOME:
   # Genome builds

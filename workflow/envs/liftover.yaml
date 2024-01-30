@@ -1,0 +1,18 @@
+name: liftover
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - ca-certificates=2023.11.17=hbcca054_0
+  - libgcc-ng=13.2.0=h807b86a_4
+  - libgomp=13.2.0=h807b86a_4
+  - libpng=1.6.39=h753d276_0
+  - libstdcxx-ng=13.2.0=h7e041cc_4
+  - libuuid=2.38.1=h0b41bf4_0
+  - libzlib=1.2.13=hd590300_5
+  - mysql-connector-c=6.1.11=h6eb9d5d_1007
+  - openssl=1.1.1w=hd590300_0
+  - ucsc-liftover=447=h954228d_0
